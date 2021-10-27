@@ -1,0 +1,24 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:56226",
+      "sslPort": 44365
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "VPService": {
+      "commandName": "Project",
+      "launchUrl": "api/values",
+      "environmentVariables": {
+        "GST_PLUGIN_PATH": "%GST_PLUGIN_PATH%;$(OutputPath)",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "GST_DEBUG": "2",
+        "PATH": "%PATH%;$(OutputPath)"
+      },
+      "nativeDebugging": true
+    }
+  }
+}

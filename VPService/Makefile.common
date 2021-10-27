@@ -1,0 +1,12 @@
+CC = g++
+GSTREAMER = `pkg-config --cflags --libs gstreamer-1.0 gstreamer-video-1.0`
+FLAGS = -fPIC
+
+.DEFAULT_GOAL := all
+
+ifeq ($(OUTDIR),)
+	OUTDIR=./bin
+endif
+
+setup-outdir:
+	@mkdir -p $(OUTDIR)

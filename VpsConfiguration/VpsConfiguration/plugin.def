@@ -1,0 +1,4 @@
+<plugin>
+   <file name="VpsConfiguration.dll"/>
+   <load env="Administration"/>
+</plugin>

@@ -1,0 +1,14 @@
+LIBRARY vps2gstreamer
+EXPORTS
+	CreateGStreamer
+	DeleteGStreamer
+	SetGStreamerProperties
+	PutData
+	GetData
+	GetDataType
+	MediaData_GetDataPointer
+	MediaData_GetDataSize
+	MetaData_GetDataPointer
+	MetaData_GetDataSize
+	MetaData_GetTimestamp
+	DeleteMemory
