@@ -22,8 +22,8 @@ The session is closed by shutting down the web socket from either side.
 
 Each web socket message consists of a header and a payload. The headers are binary and contain in the following order:
 
-- 2 bytes: Message type as 16 bit unsigned integer, network (big) endianness. 1 = configuration, 2 = media, 3 = metadata
-- 2 bytes: Version as 16 bit unsigned integer, network (big) endianness, for now always 1.
+- 2 bytes: Message type as 16 bit unsigned integer, network (big) endianness. 1 = configuration, 2 = media, 3 = metadata, 4 = event (introduced in version 2)
+- 2 bytes: Version as 16 bit unsigned integer, network (big) endianness, it is value from 1 to 2.
 - 4 bytes: Length of payload exclusive this header as 32 bit unsigned integer, network (big) endianness
 
 The payload varies with the message type:
@@ -32,7 +32,13 @@ The payload varies with the message type:
 - Media: Binary data, usually video frames. Data from XProtect has an initial “milestone generic byte data header” prepended to describe data.
 - Metadata: A timestamp in milliseconds after UNIX Epoch as 64 bit unsigned integer, network (big) endianness,
   immediately followed by metadata in Onvif XML encoded as UTF-8.
-
+- Event: Has the following structure:
+    *  8 bytes TimeStamp - in milliseconds after UNIX Epoch as 64 bit unsigned integer, network (big) endianness
+    *  16 bytes SourceId - GUID of the source sending the event mixed-endian format: https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
+    *  16 bytes EventId - GUID of the event being trigered in mixed-endian format: https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
+    *  2 bytes SourceNameLength - integer value containing the number of bytes for the next data (Trigger Source Name), network (big) endianness
+    *  SourceNameLength number of bytes Trigger Source Name - the name of the source trigerring the event in ASCII
+    *  Byte array of data - the rest of the payload is cutom data send direcly.
 
 ## The XProtect Recording Server’s Client Implementation
 
