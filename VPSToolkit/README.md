@@ -68,27 +68,29 @@ The plugins provided use standard GStreamer elements, and there is no GPU accele
 
 ~~~txt
 mipsdk-samples-vps/
-├── VpsCommon/
-│   └── VpsCommon.sln
-├── VpsConfiguration/
-│   └── VpsConfiguration.sln
-├── VPService/
-│    ├── VPService.sln
-│    ├── Makefile
-│    ├── Meta/
-│    ├── Plugins/
-│    ├── VPService/
-│    ├── Vps2GStreamer/
-│    └── VpsUtilities/
-│──── README.md
-│──── VPS-Protocol.md
+├── VpsToolkit/
+│   ├── VpsConfiguration/
+│   │   └── VpsConfiguration.sln
+│   ├── VPService/
+│   │   ├── Meta/
+│   │   ├── Plugins/
+│   │   ├── Vps2GStreamer/
+│   │   ├── VPService/
+│   │   ├── VpsUtilities/
+│   │   ├── VPService.sln
+│   │   └── Makefile
+│   ├── README.md
+│   ├── VPSConfig.png
+│   ├── VPSHardware.png
+│   ├── VPSOverview.png
+│   └── VPS-Protocol.md
+├── README.md
+└── LICENSE.md
 ~~~
 
-`mipsdk-samples-vps/VpsCommon` is a dependency for *VP Service*. Compile these binaries and copy it to `mipsdk-samples-vps/VpsSamples/lib` directory before building *VP Service*.
+`mipsdk-samples-vps/VpsToolkit/VpsConfiguration` contains source files for the *VPS Configuration* Management Client plugin.
 
-`mipsdk-samples-vps/VpsConfiguration` contains source files for the *VPS Configuration* Management Client plugin.
-
-`mipsdk-samples-vps/VPService` contains source files for *VP Service*.
+`mipsdk-samples-vps/VpsToolkit/VPService` contains source files for *VP Service*.
 
 ## Exploring the VPS Toolkit sample
 
@@ -103,7 +105,7 @@ To run the sample included in the VPS Toolkit, perform the following tasks:
 
 ## Installing the VPS Configuration Management Client plugin
 
-The solution file is located in `mipsdk-samples-vps/VpsConfiguration/VpsConfiguration.sln`.
+The solution file is located in `mipsdk-samples-vps/VpsToolkit/VpsConfiguration/VpsConfiguration.sln`.
 
 To deploy the *VPS Configuration* plugin:
 
@@ -113,10 +115,9 @@ To deploy the *VPS Configuration* plugin:
 
 3. If the MIP SDK Tray Manager is running, exit it (right-click the MIP SDK Tray Manager icon in the System Tray and select "Exit Tray Manager").
 
-4. Copy the following files from the output folder of the build into a subdirectory of the MIPPlugins directory in your XProtect VMS installation:
+4. Copy the following files from the output folder of the build into a subdirectory (VpsConfiguration) of the MIPPlugins directory in your XProtect VMS installation:
 
    * `plugin.def`
-   * `VideoOS.ConfigurationAPI.dll`
    * `VpsConfiguration.dll`
 
    For example, open a command prompt as Administrator inside the build output folder and execute the following commands:
@@ -124,30 +125,28 @@ To deploy the *VPS Configuration* plugin:
    ~~~cmd
    mkdir "%ProgramFiles%\Milestone\MIPPlugins\VpsConfiguration"
    copy /Y plugin.def "%ProgramFiles%\Milestone\MIPPlugins\VpsConfiguration"
-   copy /Y VideoOS.ConfigurationAPI.dll "%ProgramFiles%\Milestone\MIPPlugins\VpsConfiguration"
    copy /Y VpsConfiguration.dll "%ProgramFiles%\Milestone\MIPPlugins\VpsConfiguration"
    ~~~
 
 5. Start the Management Client. You should see a new node named *Video Processing Service* near the bottom in the Site Navigation view.
 
-6. You can restart the MIP SDK Tray Manager from the Windows Start menu.
-
+6. You can restart the MIP SDK Tray Manager from the Windows Start menu.6
 
 ## Setting up VP Service on Windows
 
-The solution file `mipsdk-samples-vps/VPService/VPService.sln` contains projects for VPService, GStreamer, and all GStreamer plugins.
+The solution file `mipsdk-samples-vps/VpsToolkit/VPService/VPService.sln` contains projects for VPService, GStreamer, and all GStreamer plugins.
 
-The solution will output all files built to `mipsdk-samples-vps/VPService/bin/$(Configuration)/`.
+The solution will output all files built to `mipsdk-samples-vps/VpsToolkit/VPService/bin/$(Configuration)/`.
 
-The solution and binaries depend on Visual Studio 2019 16.4 (or later), .NET Core 3.1, and MSVC 64-bit GStreamer 1.16.1 (or later).
+The solution and binaries depend on Visual Studio 2019 16.4 (or later), .NET Core 3.1, and MSVC 64-bit GStreamer 1.18 (or later).
 
 ### Installing GStreamer on Windows
 
-If you have not already installed MSVC 64-bit GStreamer 1.16.1 development and runtime packages, follow the the instructions at <https://gstreamer.freedesktop.org/documentation/installing/on-windows.html>.
+If you have not already installed MSVC 64-bit GStreamer 1.18 development and runtime packages, follow the instructions at <https://gstreamer.freedesktop.org/documentation/installing/on-windows.html>.
 
-With GStreamer 1.16.2, please select the "Complete" install mode. VPS will not run if you select "Typical".
+With GStreamer 1.18, please select the "Complete" install mode. VPS will not run if you select "Typical".
 
-The *VP Service* solution and binaries expect the environment variable `GSTREAMER_1_0_ROOT_X86_64` to be set, and the GStreamer installer will do so. If Visual Studio was open during the GStreamer installation, close and reopen Visual Studio.
+The *VP Service* solution and binaries expect the environment variable `GSTREAMER_1_0_ROOT_MSVC_X86_64` to be set, and the GStreamer installer will do so. If Visual Studio was open during the GStreamer installation, close and reopen Visual Studio.
 
 ### Installing .NET Core 3.1 on Windows
 
@@ -167,17 +166,13 @@ You can download .NET Core 3.1 installers from <https://dotnet.microsoft.com/dow
 
 ### Building VP Service on Windows
 
-Open and build `mipsdk-samples-vps/VpsCommon/VpsCommon.sln`.
-
-Copy `VideoOS.Vps.VpsCommon.dll` to `mipsdk-samples-vps/VPService/lib` directory
-
-Open and build `mipsdk-samples-vps/VPService/VPService.sln`.
+Open and build `mipsdk-samples-vps/VpsToolkit/VPService/VPService.sln`.
 
 If needed, first change the build mode (dropdown in upper middle of VS) from Docker or IIS Express to `VPService`.
 
 ### Running VP Service on Windows
 
-To run `VPService`, press F5 in Visual Studio, or execute these commands in the directory `mipsdk-samples-vps//VPService/bin/$(Configuration)/`:
+To run `VPService`, press F5 in Visual Studio, or execute these commands in the directory `mipsdk-samples-vps/VpsToolkit/VPService/bin/$(Configuration)/`:
 
 ~~~cmd
 set GST_DEBUG=2
@@ -198,14 +193,14 @@ You can configure logging in several ways:
     ~~~cmd
     set GST_DEBUG=2
     set GST_PLUGIN_PATH=.
-    dotnet VPService.dll -- -log_debug
+    dotnet VPService.dll -log_debug
     ~~~
 
 ## Setting up VP Service on Linux
 
 A number of packages are required to build and run *VP Service* on Linux. In these instructions, we will assume Ubuntu 18.04, but you should be able to adopt the instructions for any current Linux distribution. For more information, see <https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1804>.
 
-The build and binaries depend on .NET Core 3.1 and GStreamer 1.16.1 (or later).
+The build and binaries depend on .NET Core 3.1 and GStreamer 1.18 (or later).
 
 ### Installing GStreamer on Linux
 
@@ -242,14 +237,14 @@ sudo apt-get install dotnet-sdk-3.1
 
 The following instructions assume that you have already copied the `VpsSamples` directory to your home directory on the Linux host.
 
-> When you copy the `VpsSamples` directory from the default MIPSDK installation directory `%ProgramFiles%\Milestone\MIPSDK\` to your home directory, avoid copying permissions, or add write permissions after copying: `chmod -R ugo+w VpsSamples`.
+> When you copy the `VpsSamples` directory to your home directory, avoid copying permissions, or add write permissions after copying: `chmod -R ugo+w VpsSamples`.
 
 ### Running VP Service on Linux
 
 You can use this command line:
 
 ~~~shell
-cd ~/mipsdk-samples-vps/VPService/bin
+cd ~/mipsdk-samples-vps/VpsToolkit/VPService/bin
 GST_DEBUG=2 GST_PLUGIN_PATH=./ LD_PRELOAD="./libgstvpsxprotect.so ./libgstvpsonvifmeta.so ./libgstvpsxprotectmeta.so ./libvpsutilities.so" dotnet VPService.dll
 ~~~
 

@@ -14,7 +14,7 @@
     <ProjectGuid>{F1D8665B-DEFA-432A-ADC0-FAA78617341E}</ProjectGuid>
     <RootNamespace>vps2gstreamer</RootNamespace>
     <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
-    <GStreamerPath>$(GSTREAMER_1_0_ROOT_X86_64)</GStreamerPath>
+    <GStreamerPath>$(GSTREAMER_1_0_ROOT_MSVC_X86_64)</GStreamerPath>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
